@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 1 Ultimate AI Detector Evasion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .loading {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0f0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .image-preview {
+            max-width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+        }
+        .drag-over {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .pulse-glow {
+            animation: pulse-glow 2s infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(139, 92, 246, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.8); }
+        }
+        .technique-item {
+            transition: all 0.3s ease;
+        }
+        .technique-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .phase1-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .step-active {
+            background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+        .step-complete {
+            background: linear-gradient(45deg, #10b981, #059669);
+            color: white;
+        }
+        .step-pending {
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center p-4 phase1-gradient rounded-2xl mb-4">
+                <img src="public/logo.png" height="100" width="100">
+				<h1 class="text-5xl font-bold text-white mb-2">
+                     AI Images to Real Photos (AI Bypasser)
+                </h1>
+            </div>
+            <p class="text-gray-700 text-lg">Advanced Bayer + Multi-Compression AI Detector Evasion</p>
+            <div class="mt-4 text-sm text-gray-600">
+                <span class="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 rounded-full mr-2">
+                    🎯 Target: 50% → 20-30% Detection Rate
+                </span>
+                <span class="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 rounded-full">
+                    🏔️ Optimized for Landscapes
+                </span>
+            </div>
+            
+            <div id="api-status" class="mt-4 p-3 bg-white rounded-lg shadow-md">
+                <div class="loading h-6 rounded"></div>
+            </div>
+        </div>
+
+        <!-- Phase 1 Features Showcase -->
+        <div class="mb-8 bg-white rounded-xl shadow-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800">⚡ Phase 1 New Features</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-lg border-l-4 border-red-400">
+                    <div class="font-bold text-red-800">🔬 Bayer Demosaicing</div>
+                    <div class="text-sm text-red-700">RGGB sensor simulation</div>
+                    <div class="text-xs text-red-600 mt-1">Impact: 10-15% reduction</div>
+                </div>
+                <div class="p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg border-l-4 border-orange-400">
+                    <div class="font-bold text-orange-800">📊 Multi-Compression</div>
+                    <div class="text-sm text-orange-700">4-5 cycle workflow</div>
+                    <div class="text-xs text-orange-600 mt-1">Impact: 5-10% reduction</div>
+                </div>
+                <div class="p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg border-l-4 border-green-400">
+                    <div class="font-bold text-green-800">🏔️ Landscape Tuned</div>
+                    <div class="text-sm text-green-700">Scene-specific artifacts</div>
+                    <div class="text-xs text-green-600 mt-1">Impact: 3-5% reduction</div>
+                </div>
+                <div class="p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg border-l-4 border-blue-400">
+                    <div class="font-bold text-blue-800">⚡ Enhanced All</div>
+                    <div class="text-sm text-blue-700">Improved techniques</div>
+                    <div class="text-xs text-blue-600 mt-1">Impact: 5-8% reduction</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Processing Area -->
+        <div class="grid lg:grid-cols-2 gap-8">
+            <!-- Upload Section -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800">📤 Upload AI Landscape</h2>
+                
+                <div id="upload-area" class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-purple-400 transition-colors">
+                    <div id="upload-content">
+                        <div class="text-6xl mb-4">🏔️</div>
+                        <p class="text-gray-600 mb-2">Drop your AI landscape here</p>
+                        <p class="text-sm text-gray-400">PNG, JPG, JPEG up to 10MB</p>
+                        <p class="text-xs text-purple-600 mt-2">Optimized for: mountains, skies, horizons, nature scenes</p>
+                    </div>
+                </div>
+                
+                <input type="file" id="file-input" accept="image/*" class="hidden">
+                
+                <div id="uploaded-preview" class="mt-4 hidden">
+                    <h3 class="text-lg font-medium mb-2">Original AI Landscape:</h3>
+                    <img id="uploaded-image" class="image-preview rounded-lg border" alt="Uploaded image">
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="mt-6 space-y-3">
+                    <button id="convert-btn" class="w-full phase1-gradient text-white py-3 px-6 rounded-lg font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all" disabled>
+                        <span id="convert-text">Select a landscape to start Phase 1 processing</span>
+                        <div id="convert-loading" class="hidden flex items-center justify-center">
+                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Processing...
+                        </div>
+                    </button>
+                    
+                    <button id="test-detection-btn" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 px-6 rounded-lg font-medium hover:from-orange-600 hover:to-red-600 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition-all" disabled>
+                        🔍 Test Against AI Detectors
+                    </button>
+                </div>
+
+                <!-- Sample Images -->
+                <div class="mt-6 border-t pt-6">
+                    <h3 class="text-lg font-medium mb-3">🧪 Try Sample Landscapes:</h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="loadSample('ai')" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 text-sm">
+                            🏔️ AI Landscape
+                        </button>
+                        <button onclick="loadSample('real')" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm">
+                            📷 Real Landscape
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result Section -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800">✨ Phase 1 Result</h2>
+                
+                <div id="result-area" class="border-2 border-gray-200 rounded-lg p-8 text-center min-h-64 flex items-center justify-center">
+                    <div id="result-placeholder" class="text-gray-400">
+                        <div class="text-6xl mb-4">🎭</div>
+                        <p class="font-medium">Phase 1 processed landscape will appear here</p>
+                        <p class="text-sm mt-2">Enhanced with Bayer + Multi-compression</p>
+                        <p class="text-xs mt-1 text-purple-600">Target: Undetectable by AI systems</p>
+                    </div>
+                    
+                    <div id="result-loading" class="hidden">
+                        <div class="loading w-64 h-64 rounded-lg mb-4"></div>
+                        <p class="text-gray-600">Applying Phase 1 ultimate techniques...</p>
+                        <p class="text-sm text-purple-600 mt-1">This may take 15-30 seconds for best results</p>
+                    </div>
+                    
+                    <div id="result-content" class="hidden w-full">
+                        <img id="result-image" class="image-preview rounded-lg border mx-auto pulse-glow" alt="Processed image">
+                        <div class="mt-4 space-y-2">
+                            <button id="download-btn" class="bg-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-700 transition-colors">
+                                💾 Download Phase 1 Result
+                            </button>
+                            <div id="processing-summary" class="text-sm text-gray-600 bg-gray-50 p-3 rounded">
+                                <!-- Processing details will appear here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 1 Processing Steps -->
+                <div id="processing-steps" class="mt-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg hidden">
+                    <h4 class="font-bold text-purple-800 mb-3">🔬 Phase 1 Ultimate Pipeline:</h4>
+                    <div class="space-y-2 text-sm">
+                        <div id="step-1" class="flex items-center">
+                            <span class="w-8 h-8 rounded-full step-pending flex items-center justify-center text-xs mr-3 font-bold">1</span>
+                            <span class="flex-1">Bayer demosaicing artifacts...</span>
+                            <span class="text-xs text-red-600 font-medium">NEW</span>
+                        </div>
+                        <div id="step-2" class="flex items-center">
+                            <span class="w-8 h-8 rounded-full step-pending flex items-center justify-center text-xs mr-3 font-bold">2</span>
+                            <span class="flex-1">Landscape-specific artifacts...</span>
+                            <span class="text-xs text-orange-600 font-medium">NEW</span>
+                        </div>
+                        <div id="step-3" class="flex items-center">
+                            <span class="w-8 h-8 rounded-full step-pending flex items-center justify-center text-xs mr-3 font-bold">3</span>
+                            <span class="flex-1">Enhanced color matrix...</span>
+                            <span class="text-xs text-blue-600 font-medium">ENH</span>
+                        </div>
+                        <div id="step-4" class="flex items-center">
+                            <span class="w-8 h-8 rounded-full step-pending flex items-center justify-center text-xs mr-3 font-bold">4</span>
+                            <span class="flex-1">Enhanced noise injection...</span>
+                            <span class="text-xs text-blue-600 font-medium">ENH</span>
+                        </div>
+                        <div id="step-5" class="flex items-center">
+                            <span class="w-8 h-8 rounded-full step-pending flex items-center justify-center text-xs mr-3 font-bold">5</span>
+                            <span class="flex-1">Enhanced micro-lens effects...</span>
+                            <span class="text-xs text-blue-600 font-medium">ENH</span>
+                        </div>
+                        <div id="step-6" class="flex items-center">
+                            <span class="w-8 h-8 rounded-full step-pending flex items-center justify-center text-xs mr-3 font-bold">6</span>
+                            <span class="flex-1">Enhanced chromatic aberration...</span>
+                            <span class="text-xs text-blue-600 font-medium">ENH</span>
+                        </div>
+                        <div id="step-7" class="flex items-center">
+                            <span class="w-8 h-8 rounded-full step-pending flex items-center justify-center text-xs mr-3 font-bold">7</span>
+                            <span class="flex-1">Enhanced frequency domain...</span>
+                            <span class="text-xs text-blue-600 font-medium">ENH</span>
+                        </div>
+                        <div id="step-8" class="flex items-center">
+                            <span class="w-8 h-8 rounded-full step-pending flex items-center justify-center text-xs mr-3 font-bold">8</span>
+                            <span class="flex-1">Multiple compression cycles...</span>
+                            <span class="text-xs text-red-600 font-medium">NEW</span>
+                        </div>
+                        <div id="step-9" class="flex items-center">
+                            <span class="w-8 h-8 rounded-full step-pending flex items-center justify-center text-xs mr-3 font-bold">9</span>
+                            <span class="flex-1">Landscape EXIF metadata...</span>
+                            <span class="text-xs text-orange-600 font-medium">NEW</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detection Test Results -->
+                <div id="detection-results" class="mt-4 p-4 bg-orange-50 rounded-lg hidden">
+                    <h4 class="font-bold text-orange-800 mb-3">🔍 AI Detector Test Results:</h4>
+                    <div id="detection-scores" class="space-y-2 text-sm">
+                        <!-- Detection results will appear here -->
+                    </div>
+                    <div class="mt-3 p-2 bg-white rounded border-l-4 border-orange-400">
+                        <div class="text-xs text-gray-600">
+                            <strong>Phase 1 Target:</strong> 20-30% detection rate (down from 50%)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase 1 Performance Dashboard -->
+        <div class="mt-8 bg-white rounded-xl shadow-lg p-6">
+            <h2 class="text-2xl font-semibold mb-6 text-gray-800">📊 Phase 1 Performance Dashboard</h2>
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-4 text-center">
+                <div class="p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
+                    <div class="text-2xl font-bold text-purple-600" id="total-processed">0</div>
+                    <div class="text-sm text-purple-700">Images Processed</div>
+                </div>
+                <div class="p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg">
+                    <div class="text-2xl font-bold text-green-600" id="evasion-rate">0%</div>
+                    <div class="text-sm text-green-700">Evasion Success</div>
+                </div>
+                <div class="p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg">
+                    <div class="text-2xl font-bold text-blue-600" id="avg-time">~0s</div>
+                    <div class="text-sm text-blue-700">Avg Process Time</div>
+                </div>
+                <div class="p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg">
+                    <div class="text-2xl font-bold text-orange-600" id="detection-tests">0</div>
+                    <div class="text-sm text-orange-700">Detection Tests</div>
+                </div>
+                <div class="p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-lg">
+                    <div class="text-2xl font-bold text-red-600" id="phase1-techniques">9</div>
+                    <div class="text-sm text-red-700">Phase 1 Techniques</div>
+                </div>
+                <div class="p-4 bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg">
+                    <div class="text-2xl font-bold text-indigo-600" id="improvement">25%</div>
+                    <div class="text-sm text-indigo-700">Expected Improvement</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase 1 Information -->
+        <div class="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6">
+            <h3 class="text-xl font-semibold mb-4 text-gray-800">🚀 About Phase 1</h3>
+            <div class="grid md:grid-cols-2 gap-6 text-sm text-gray-700">
+                <div>
+                    <h4 class="font-semibold mb-2 text-purple-800">New High-Impact Techniques:</h4>
+                    <ul class="space-y-1">
+                        <li>• <strong>Bayer Demosaicing:</strong> Simulates RGGB sensor artifacts</li>
+                        <li>• <strong>Multi-Compression:</strong> 4-5 cycle photographer workflow</li>
+                        <li>• <strong>Landscape Tuning:</strong> Scene-specific optimizations</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-2 text-blue-800">Enhanced Techniques:</h4>
+                    <ul class="space-y-1">
+                        <li>• <strong>Enhanced Frequency:</strong> Stronger DCT manipulation</li>
+                        <li>• <strong>Asymmetric Vignetting:</strong> Real lens imperfections</li>
+                        <li>• <strong>Radial Chromatic:</strong> Distance-based aberration</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API configuration
+        const API_BASE = 'http://localhost:8000';
+        
+        // Global variables
+        let currentFile = null;
+        let resultBlob = null;
+
+        // DOM elements
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+        const uploadedPreview = document.getElementById('uploaded-preview');
+        const uploadedImage = document.getElementById('uploaded-image');
+        const convertBtn = document.getElementById('convert-btn');
+        const testDetectionBtn = document.getElementById('test-detection-btn');
+        const convertText = document.getElementById('convert-text');
+        const convertLoading = document.getElementById('convert-loading');
+        const resultArea = document.getElementById('result-area');
+        const resultPlaceholder = document.getElementById('result-placeholder');
+        const resultLoading = document.getElementById('result-loading');
+        const resultContent = document.getElementById('result-content');
+        const resultImage = document.getElementById('result-image');
+        const downloadBtn = document.getElementById('download-btn');
+        const processingSteps = document.getElementById('processing-steps');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkApiStatus();
+            loadStats();
+            setupEventListeners();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            uploadArea.addEventListener('click', () => fileInput.click());
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('drop', handleDrop);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            convertBtn.addEventListener('click', convertImage);
+            testDetectionBtn.addEventListener('click', testDetection);
+            downloadBtn.addEventListener('click', downloadResult);
+        }
+
+        // Check API status
+        async function checkApiStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/`);
+                const data = await response.json();
+                
+                document.getElementById('api-status').innerHTML = `
+                    <div class="flex items-center justify-center gap-2">
+                        <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                        <span class="text-sm text-green-700 font-medium">Phase 1 System Online</span>
+                    </div>
+                `;
+                
+            } catch (error) {
+                document.getElementById('api-status').innerHTML = `
+                    <div class="flex items-center justify-center gap-2">
+                        <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <span class="text-sm text-red-700">Phase 1 System Offline - Start the backend server</span>
+                    </div>
+                `;
+            }
+        }
+
+        // File handling
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        }
+
+        function handleFileSelect(e) {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        }
+
+        function handleFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('Please select an image file');
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                alert('File size must be less than 10MB');
+                return;
+            }
+
+            currentFile = file;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedImage.src = e.target.result;
+                uploadedPreview.classList.remove('hidden');
+                convertBtn.disabled = false;
+                testDetectionBtn.disabled = false;
+                convertText.textContent = '🚀 Start Phase 1 Processing';
+            };
+            reader.readAsDataURL(file);
+
+            resetResult();
+        }
+
+        // Load sample image
+        async function loadSample(type) {
+            try {
+                const response = await fetch(`${API_BASE}/sample/${type}`);
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const file = new File([blob], `sample_${type}_landscape.jpg`, { type: 'image/jpeg' });
+                    handleFile(file);
+                } else {
+                    alert(`Could not load sample ${type} landscape image`);
+                }
+            } catch (error) {
+                alert(`Error loading sample: ${error.message}`);
+            }
+        }
+
+        // Convert image with Phase 1 processing
+        async function convertImage() {
+            if (!currentFile) return;
+
+            // Show loading state
+            convertBtn.disabled = true;
+            convertText.classList.add('hidden');
+            convertLoading.classList.remove('hidden');
+            
+            // Show result loading and processing steps
+            resultPlaceholder.classList.add('hidden');
+            resultLoading.classList.remove('hidden');
+            processingSteps.classList.remove('hidden');
+            
+            // Animate Phase 1 processing steps
+            animatePhase1ProcessingSteps();
+
+            try {
+                const formData = new FormData();
+                formData.append('file', currentFile);
+
+                const response = await fetch(`${API_BASE}/convert_aggressive`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    resultBlob = await response.blob();
+                    const imageUrl = URL.createObjectURL(resultBlob);
+                    
+                    // Get processing info from headers
+                    const processingTime = response.headers.get('X-Processing-Time') || '0';
+                    
+                    // Show result
+                    resultImage.src = imageUrl;
+                    resultLoading.classList.add('hidden');
+                    resultContent.classList.remove('hidden');
+                    
+                    // Update processing summary
+                    document.getElementById('processing-summary').innerHTML = `
+                        <div class="font-medium text-gray-800">✅ Phase 1 Processing Complete</div>
+                        <div class="text-xs text-gray-600 mt-1">
+                            Processing Time: ${parseFloat(processingTime).toFixed(2)}s
+                        </div>
+                        <div class="text-xs text-purple-600 mt-1">
+                            🔬 Applied: Bayer artifacts + Multi-compression + Landscape tuning + All enhancements
+                        </div>
+                    `;
+                    
+                    // Mark all steps as complete
+                    markAllStepsComplete();
+                    
+                    // Update stats
+                    loadStats();
+                } else {
+                    throw new Error(`Phase 1 processing failed: ${response.statusText}`);
+                }
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+                resetResult();
+            }
+
+            // Reset button state
+            convertBtn.disabled = false;
+            convertText.classList.remove('hidden');
+            convertLoading.classList.add('hidden');
+        }
+
+        // Test against AI detectors
+        async function testDetection() {
+            if (!currentFile) return;
+
+            // Show loading
+            testDetectionBtn.disabled = true;
+            testDetectionBtn.innerHTML = '<div class="flex items-center justify-center"><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Testing...</div>';
+
+            try {
+                const formData = new FormData();
+                formData.append('file', currentFile);
+
+                const response = await fetch(`${API_BASE}/test_detection`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    showPhase1DetectionResults(data);
+                    loadStats(); // Update evasion rate
+                } else {
+                    throw new Error(`Phase 1 detection test failed: ${response.statusText}`);
+                }
+            } catch (error) {
+                alert(`Error testing detection: ${error.message}`);
+            }
+
+            // Reset button
+            testDetectionBtn.disabled = false;
+            testDetectionBtn.innerHTML = '🔍 Test Against AI Detectors';
+        }
+
+        // Show Phase 1 detection test results
+        function showPhase1DetectionResults(data) {
+            const detectionResults = document.getElementById('detection-results');
+            const detectionScores = document.getElementById('detection-scores');
+            
+            let scoresHtml = '';
+            let totalScore = 0;
+            let detectorCount = 0;
+            
+            if (data.detection_results && typeof data.detection_results === 'object') {
+                Object.entries(data.detection_results).forEach(([detector, score]) => {
+                    if (typeof score === 'number') {
+                        const percentage = (score * 100).toFixed(1);
+                        let status, color;
+                        
+                        // Phase 1 improved thresholds
+                        if (score < 0.25) {
+                            status = 'excellent';
+                            color = 'green';
+                        } else if (score < 0.35) {
+                            status = 'good';
+                            color = 'blue';
+                        } else if (score < 0.50) {
+                            status = 'fair';
+                            color = 'orange';
+                        } else {
+                            status = 'needs-work';
+                            color = 'red';
+                        }
+                        
+                        scoresHtml += `
+                            <div class="flex justify-between items-center p-2 bg-${color}-50 rounded">
+                                <span class="font-medium">${detector}:</span>
+                                <div class="text-right">
+                                    <span class="text-${color}-600 font-bold">${percentage}% AI detected</span>
+                                    <div class="text-xs text-${color}-500">${status}</div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        totalScore += score;
+                        detectorCount++;
+                    }
+                });
+            }
+            
+            // Calculate average and improvement
+            if (detectorCount > 0) {
+                const avgScore = totalScore / detectorCount;
+                const improvement = ((0.5 - avgScore) / 0.5 * 100).toFixed(1); // From baseline 50%
+                
+                scoresHtml += `
+                    <div class="mt-4 p-3 bg-gradient-to-r from-purple-50 to-blue-50 rounded border-l-4 border-purple-400">
+                        <div class="font-bold text-purple-800">📊 Phase 1 Results Summary</div>
+                        <div class="text-sm text-purple-700 mt-1">
+                            Average Detection: ${(avgScore * 100).toFixed(1)}%
+                        </div>
+                        <div class="text-sm text-green-700">
+                            Improvement: ${improvement}% better than baseline (50%)
+                        </div>
+                        <div class="text-xs text-gray-600 mt-2">
+                            ${avgScore < 0.30 ? '✅ Phase 1 Target Achieved!' : '⚠️ Consider Phase 2 for better results'}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (data.evasion_assessment) {
+                const confidence = data.evasion_assessment.confidence;
+                const likely = data.evasion_assessment.likely_undetected;
+                
+                scoresHtml += `
+                    <div class="mt-3 p-3 bg-gray-50 rounded border-l-4 border-gray-400">
+                        <div class="font-bold ${likely ? 'text-green-600' : 'text-orange-600'}">
+                            ${likely ? '✅ Likely Undetected by Most Systems' : '⚠️ May Still Be Detected'}
+                        </div>
+                        <div class="text-xs text-gray-600">Assessment Confidence: ${confidence}</div>
+                    </div>
+                `;
+            }
+            
+            detectionScores.innerHTML = scoresHtml || '<div class="text-gray-500">No detection results available</div>';
+            detectionResults.classList.remove('hidden');
+        }
+
+        // Animate Phase 1 processing steps
+        function animatePhase1ProcessingSteps() {
+            const steps = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            const stepTexts = [
+                'Applying Bayer demosaicing artifacts...',
+                'Adding landscape-specific artifacts...',
+                'Enhanced color matrix transformation...',
+                'Enhanced realistic noise injection...',
+                'Enhanced micro-lens effects...',
+                'Enhanced chromatic aberration...',
+                'Enhanced frequency domain manipulation...',
+                'Multiple compression cycles...',
+                'Adding landscape-optimized EXIF...'
+            ];
+            
+            steps.forEach((stepNum, index) => {
+                setTimeout(() => {
+                    const stepEl = document.getElementById(`step-${stepNum}`);
+                    const circle = stepEl.querySelector('.w-8');
+                    const text = stepEl.querySelector('.flex-1');
+                    
+                    // Activate step
+                    circle.classList.remove('step-pending');
+                    circle.classList.add('step-active');
+                    circle.textContent = '⟳';
+                    text.textContent = stepTexts[index];
+                    
+                    // Complete step after delay
+                    setTimeout(() => {
+                        circle.classList.remove('step-active');
+                        circle.classList.add('step-complete');
+                        circle.textContent = '✓';
+                        text.textContent = stepTexts[index].replace('...', ' ✅');
+                    }, 1500 + (index * 300));
+                }, index * 1000);
+            });
+        }
+
+        // Mark all steps as complete
+        function markAllStepsComplete() {
+            const steps = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            const completeTexts = [
+                'Bayer demosaicing artifacts applied ✅',
+                'Landscape-specific artifacts added ✅',
+                'Enhanced color matrix transformation ✅',
+                'Enhanced realistic noise injection ✅',
+                'Enhanced micro-lens effects ✅',
+                'Enhanced chromatic aberration ✅',
+                'Enhanced frequency domain manipulation ✅',
+                'Multiple compression cycles completed ✅',
+                'Landscape-optimized EXIF embedded ✅'
+            ];
+            
+            steps.forEach((stepNum, index) => {
+                const stepEl = document.getElementById(`step-${stepNum}`);
+                const circle = stepEl.querySelector('.w-8');
+                const text = stepEl.querySelector('.flex-1');
+                
+                circle.classList.remove('step-pending', 'step-active');
+                circle.classList.add('step-complete');
+                circle.textContent = '✓';
+                text.textContent = completeTexts[index];
+            });
+        }
+
+        // Download result
+        function downloadResult() {
+            if (resultBlob) {
+                const url = URL.createObjectURL(resultBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `phase1_ultimate_landscape_${Date.now()}.jpg`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+        }
+
+        // Reset result area
+        function resetResult() {
+            resultContent.classList.add('hidden');
+            resultLoading.classList.add('hidden');
+            resultPlaceholder.classList.remove('hidden');
+            processingSteps.classList.add('hidden');
+            document.getElementById('detection-results').classList.add('hidden');
+            resultBlob = null;
+            
+            // Reset all steps
+            const steps = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            steps.forEach(stepNum => {
+                const stepEl = document.getElementById(`step-${stepNum}`);
+                const circle = stepEl.querySelector('.w-8');
+                const text = stepEl.querySelector('.flex-1');
+                
+                circle.classList.remove('step-active', 'step-complete');
+                circle.classList.add('step-pending');
+                circle.textContent = stepNum;
+                
+                const stepTexts = [
+                    'Bayer demosaicing artifacts...',
+                    'Landscape-specific artifacts...',
+                    'Enhanced color matrix...',
+                    'Enhanced noise injection...',
+                    'Enhanced micro-lens effects...',
+                    'Enhanced chromatic aberration...',
+                    'Enhanced frequency domain...',
+                    'Multiple compression cycles...',
+                    'Landscape EXIF metadata...'
+                ];
+                text.textContent = stepTexts[stepNum - 1];
+            });
+        }
+
+        // Load statistics
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE}/stats`);
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    document.getElementById('total-processed').textContent = data.processing_stats.total_processed || 0;
+                    document.getElementById('evasion-rate').textContent = `${(data.processing_stats.evasion_success_rate || 0).toFixed(1)}%`;
+                    document.getElementById('avg-time').textContent = `~${(data.processing_stats.average_time || 0).toFixed(1)}s`;
+                    document.getElementById('detection-tests').textContent = data.processing_stats.detection_tests || 0;
+                    
+                    // Calculate improvement (assuming 50% baseline)
+                    const currentRate = data.processing_stats.evasion_success_rate || 0;
+                    const improvement = Math.max(0, currentRate - 50);
+                    document.getElementById('improvement').textContent = `${improvement.toFixed(1)}%`;
+                }
+            } catch (error) {
+                console.log('Could not load stats:', error);
+            }
+        }
+
+        // Auto-refresh stats every 30 seconds
+        setInterval(loadStats, 30000);
+        
+        // Auto-refresh system status every 10 seconds during initialization
+        setInterval(() => {
+            checkApiStatus();
+        }, 10000);
+    </script>
+</body>
+</html>
