@@ -53,6 +53,13 @@
             background: #e5e7eb;
             color: #6b7280;
         }
+        .bolt-badge {
+            transition: all 0.3s ease;
+        }
+        .bolt-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
@@ -311,6 +318,16 @@
                     </ul>
                 </div>
             </div>
+        </div>
+
+        <!-- Built with Bolt Badge -->
+        <div class="mt-8 text-center">
+            <a href="https://bolt.new" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg bolt-badge">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="currentColor"/>
+                </svg>
+                <span class="text-sm font-medium">Built with Bolt</span>
+            </a>
         </div>
     </div>
 
